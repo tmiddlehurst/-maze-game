@@ -1,0 +1,31 @@
+html {
+  background: #011;
+}
+.player {
+  height: 10px;
+  width: 10px;
+}
+
+.clock-face {
+  color: #FFF;
+}
+
+.game-area {
+
+  height: 400px;
+  width: 1400px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: even;
+  margin: 12.5% auto;
+  background: #FFF;
+}
+
+.tile {
+  box-sizing: border-box;
+  border: 1px solid black;
+  display: inline-block;
+}
+.tile-wall {
+  background-color: #011;
+}
