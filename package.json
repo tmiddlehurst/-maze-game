@@ -1,0 +1,21 @@
+{
+  "main": "lib/bundle.js",
+  "name": "maze_game",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "webpack",
+    "start": "build"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "webkit": "0.0.0"
+  },
+  "nodemonConfig": {
+    "ignore": ["test/*", "docs/*", "lib/*", "node_modules/*", "app/assets/*"],
+    "delay": "1500",
+    "watch": "app/modules/*"
+  }
+}
