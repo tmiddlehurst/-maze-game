@@ -1,4 +1,4 @@
-import * as util from './util.js';
+import { $, $All, moves, isValidKey } from './util.js';
 
 /**
  * Defines a character within the game.
@@ -21,18 +21,18 @@ export default class Character {
 
   render(newPosition = this.position, oldPosition) {
     if (oldPosition) {
-      util.$All('.tile').item(oldPosition).innerHTML = null;
+      $All('.tile').item(oldPosition).innerHTML = null;
     }
-    util.$All('.tile').item(newPosition).innerHTML = `<div class="${this.name}"></div>`;
+    $All('.tile').item(newPosition).innerHTML = `<div class="${this.name}"></div>`;
   }
 
   moveOne(key) {
-    if (!util.isValidKey) {
+    if (!isValidKey) {
       return;
     }
 
     const initialPosition = this.position;
-    const finalPosition = util.moves[key](initialPosition, this.gridWidth);
+    const finalPosition = moves[key](initialPosition, this.gridWidth);
 
     if (
       !this.tiles[finalPosition] ||

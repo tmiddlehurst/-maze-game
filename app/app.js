@@ -1,19 +1,17 @@
+import { $, lightsOff } from './modules/util.js';
 import Clock from './modules/clock.js';
 import Grid from './modules/grid.js';
 import Maze from './modules/maze.js';
 import Character from './modules/character.js';
 
 window.onload = () => {
-  const gameClock = new Clock();
+  const gameClock = new Clock('.clock-start_stop', '.clock-face');
+  // TODO: Refactor gameGrid constructor to take {number of tiles} - integer and still produce a grid of square tiles.
   const gameGrid = new Grid('.game-area', 50);
   const gameMaze = new Maze();
   const player = new Character('player', 112, gameGrid);
 
-  // gameGrid.render();
-  // gameMaze.loadMaze();
-  // player.render(112);
+  $('.lightswitch').addEventListener('click', function() {
+    lightsOff('.game-area');
+  });
 };
-/* TODO: HTML custom elements? e.g. (class Wall extends HTMLElement)
-  On this line... create a 'cell' element, which has data-xcoord and data-ycoord...
-  ... Each cell has a property of 'aboveCell', 'rightCell', 'belowCell', 'leftCell'
-*/

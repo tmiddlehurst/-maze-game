@@ -1,7 +1,3 @@
-const $ = selector => document.querySelector(selector);
-const $All = selector => document.querySelectorAll(selector);
-const isEven = value => value % 2;
-
 /**
  * L / R / U / D movement functions mapped to keys.
  */
@@ -17,7 +13,7 @@ const moves = {
   },
   s: function(position, width) {
     return (position += width);
-  },
+  }
 };
 
 /**
@@ -25,4 +21,16 @@ const moves = {
  */
 const isValidKey = key => !Object.keys(moves).includes(key);
 
-export {$, $All, isEven, moves, isValidKey};
+const isEven = value => value % 2;
+
+function $(selector) {
+  return document.querySelector(selector);
+}
+function $All(selector) {
+  return document.querySelectorAll(selector);
+}
+function lightsOff(targetSelector) {
+  $(targetSelector).classList.toggle('lights_off');
+}
+
+export { $, $All, isEven, moves, isValidKey, lightsOff };

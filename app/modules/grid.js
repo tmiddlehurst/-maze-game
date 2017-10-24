@@ -1,4 +1,4 @@
-import * as util from './util.js';
+import { $ } from './util.js';
 
 /**
  *
@@ -16,12 +16,6 @@ export class Tile {
     this.dimension = dimension;
     this.index = i;
     this.isWall = isWall;
-    // this.htmlElement =
-    //   `<div
-    //     class="tile ${wallClass}"
-    //     data-tileIndex="${i}"
-    //     style="height:${dimension}px;width:${dimension}px">
-    //   <div>`;
   }
 }
 
@@ -35,7 +29,7 @@ export default class Grid {
    * @param {Number} dimension - height and width value for each square tile.
    */
   constructor(container, tileDimension) {
-    this.container = util.$(container);
+    this.container = $(container);
 
     // Number of
     this.columns = this.container.clientWidth / tileDimension;
@@ -67,8 +61,6 @@ export default class Grid {
         : null;
       this.container.appendChild(t);
     });
-
-    // e => (this.container.innerHTML += e.htmlElement));
   }
 }
 

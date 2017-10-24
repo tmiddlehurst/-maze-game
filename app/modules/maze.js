@@ -1,4 +1,4 @@
-import * as util from './util.js';
+import { $, $All } from './util.js';
 
 /**
  * Defines a save state for a game maze.
@@ -8,14 +8,14 @@ import * as util from './util.js';
  */
 export default class Maze {
   constructor(gameAreaSelector) {
-    this.gameArea = util.$(gameAreaSelector);
+    this.gameArea = $(gameAreaSelector);
     this.savedMaze = window.localStorage.getItem('maze').split(',') || [];
-    util.$('.edit-maze').addEventListener('click', () => this.isEditing());
-    util.$('.save-maze').addEventListener('click', () => this.saveMaze());
+    $('.maze-edit').addEventListener('click', () => this.isEditing());
+    $('.maze-save').addEventListener('click', () => this.saveMaze());
   }
 
   isEditing() {
-    util.$(this.gameArea).addEventListener('click', event => {
+    $(this.gameArea).addEventListener('click', event => {
       let classList = event.target.classList;
 
       if (classList.contains('tile')) {
@@ -25,7 +25,7 @@ export default class Maze {
   }
 
   saveMaze() {
-    let tiles = util.$All('.tile');
+    let tiles = $All('.tile');
     let newMaze = tiles.map(
       e => (e.classList.contains('tile-wall') ? 1 : 0)
     );

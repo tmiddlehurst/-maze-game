@@ -1,26 +1,28 @@
-import * as util from './util.js';
+import { $ } from './util.js';
 
 export default class Clock {
-  constructor() {
-    this.time = 0;
+  constructor(buttonSelector, faceSelector) {
     this.intervalId;
-
-    util.$('.clock-start_btn').addEventListener('click', this.start.bind(this));
-    util.$('.clock-pause_btn').addEventListener('click', this.pause.bind(this));
+    this.time = 0;
+    this.button = $(buttonSelector);
+    this.face = $(faceSelector);
+    $(buttonSelector).addEventListener('click', () => this.toggleStartStop());
   }
 
-  _updateClock(clock, time) {
-    clock.innerHTML = time;
+  toggleStartStop() {
+    this.intervalId ? this.pause() : this.start();
   }
 
   start() {
     this.intervalId = setInterval(() => {
       this.time += 0.1;
-      this._updateClock(util.$('.clock-face'), this.time.toFixed(1));
+      this.face.innerHTML = this.time.toFixed(1);
     }, 100);
+    this.button.innerText = 'Stop';
   }
 
   pause() {
     clearInterval(this.intervalId);
+    this.button.innerText = 'Start';
   }
 }
