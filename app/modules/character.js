@@ -1,47 +1,39 @@
-import { $, $All, moves, isValidKey } from './util.js';
+import { $, $All } from './util.js';
 
 /**
  * Defines a character within the game.
  * Includes methods to render character, move character position.
- *
  * @param {String} name
- * @param {String} grid - CSS selector for parent grid
- * @param {Array} position - coordinate array for starting position. e.g. [0,4]
+ * @param {Integer} startPosition - coordinate for starting position. e.g. [0,4]
  */
 export default class Character {
-  constructor(name, startPosition, grid) {
-    this.name = name;
+  constructor(name, startPosition) {
     this.position = startPosition;
-    this.gridWidth = grid.columns;
-    this.tiles = grid.tiles;
-
-    this.render();
-    document.addEventListener('keypress', event => this.moveOne(event.key));
+    this.name = name;
+    this._renderSprite();
+    document.addEventListener('keypress', function() {
+      const actionKeymap = {
+        'w': 'up',
+        'a': 'left',
+        's': 'down',
+        'd': 'right',
+      };
+      // window.grid.move
+    })
   }
 
-  render(newPosition = this.position, oldPosition) {
-    if (oldPosition) {
-      $All('.tile').item(oldPosition).innerHTML = null;
-    }
-    $All('.tile').item(newPosition).innerHTML = `<div class="${this.name}"></div>`;
+  _destroySprite(atTile) {
+    this.position = null;
+    $All('.tile').item(atTile).innerHTML = null;
   }
 
-  moveOne(key) {
-    if (!isValidKey) {
-      return;
-    }
+  _renderSprite(atTile = this.position) {
+    this.position = atTile;
+    $All('.tile').item(atTile).innerHTML = `<div class="${this.name}"></div>`;
+  }
 
-    const initialPosition = this.position;
-    const finalPosition = moves[key](initialPosition, this.gridWidth);
-
-    if (
-      !this.tiles[finalPosition] ||
-      this.tiles[finalPosition].isWall
-    ) {
-      return;
-    }
-
-    this.position = finalPosition;
-    this.render(finalPosition, initialPosition);
+  moveTo(tile) {
+    this._destroySprite(this.position);
+    this._renderSprite(tile);
   }
 }

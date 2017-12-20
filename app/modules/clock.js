@@ -1,28 +1,32 @@
 import { $ } from './util.js';
 
 export default class Clock {
-  constructor(buttonSelector, faceSelector) {
+  constructor() {
     this.intervalId;
     this.time = 0;
-    this.button = $(buttonSelector);
-    this.face = $(faceSelector);
-    $(buttonSelector).addEventListener('click', () => this.toggleStartStop());
+
+    $('.clock-start_stop').addEventListener('click', () => this.toggleStartStop());
+  }
+
+  isRunning() {
+    return this.intervalId.length != 0;
   }
 
   toggleStartStop() {
-    this.intervalId ? this.pause() : this.start();
+    this.intervalId ? this._pause() : this._start();
   }
 
-  start() {
+  _start() {
     this.intervalId = setInterval(() => {
-      this.time += 0.1;
-      this.face.innerHTML = this.time.toFixed(1);
-    }, 100);
-    this.button.innerText = 'Stop';
+      this.time += 0.025;
+      $('.clock-face').innerHTML = this.time.toFixed(1);
+    }, 25);
+    $('.clock-start_stop').innerText = 'Stop';
   }
 
-  pause() {
+  _pause() {
     clearInterval(this.intervalId);
-    this.button.innerText = 'Start';
+    this.intervalId = null;
+    $('.clock-start_stop').innerText = 'Start';
   }
 }

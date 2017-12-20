@@ -3,7 +3,7 @@ import { $ } from './util.js';
 /**
  *
  * Defines a tile within the game grid.
- * Sets index, dimensions and coordinates.
+ * Sets index, dimensions, 'isWall'.
  */
 export class Tile {
   /**
@@ -20,7 +20,7 @@ export class Tile {
 }
 
 /**
- * Defines the game grid within which to build the maze
+ * Defines the game grid in which to build the maze.
  */
 export default class Grid {
   /**
@@ -31,18 +31,18 @@ export default class Grid {
   constructor(container, tileDimension) {
     this.container = $(container);
 
-    // Number of
-    this.columns = this.container.clientWidth / tileDimension;
-    this.rows = this.container.clientHeight / tileDimension;
+    // Number of cols/rows
+    this.width = this.container.clientWidth / tileDimension;
+    this.height = this.container.clientHeight / tileDimension;
 
-    const tileTotal = Math.floor(this.rows * this.columns);
+    const tileTotal = Math.floor(this.height * this.width);
 
     this.savedMaze =
       window.localStorage.getItem('maze').split(',') ||
-      new Array(area).fill('');
+      new Array(area).fill();
 
     this.tiles = new Array(tileTotal)
-      .fill('')
+      .fill()
       .map((e, i) => new Tile(tileDimension, i, this.savedMaze[i] == 1));
 
     this.render();
@@ -50,15 +50,15 @@ export default class Grid {
 
   render() {
     this.container.innerHTML = null;
-    // this.tiles.forEach(e => (this.container.innerHTML += e.htmlElement));
     this.tiles.forEach((e, i) => {
       let t = document.createElement('div');
-      t.setAttribute('style', `height:${e.dimension}px;width:${e.dimension}px;`);
+      t.setAttribute(
+        'style',
+        `height:${e.dimension}px;width:${e.dimension}px;`
+      );
       t.setAttribute('data-tileIndex', i);
-      t.classList.add('tile')
-      e.isWall
-        ? t.classList.add(['tile-wall'])
-        : null;
+      t.classList.add('tile');
+      e.isWall ? t.classList.add(['tile-wall']) : (t.innerText = i);
       this.container.appendChild(t);
     });
   }
@@ -91,7 +91,7 @@ export default class Grid {
 //   }
 
 //   loadMaze() {
-//     let tiles = $All('.tile');
+//     let tiles ile');
 //     tiles.forEach((e, i) => {
 //       if (this.savedMaze[i] == 1) {
 //         e.classList.add('tile-wall');
@@ -100,7 +100,7 @@ export default class Grid {
 //   }
 
 //   saveMaze() {
-//     let tiles = $All('.tile');
+//     let tiles ile');
 //     let newMaze = tiles.map(
 //       e => (e.classList.contains('tile-wall') ? '1' : '0')
 //     );

@@ -18,7 +18,7 @@ export default class Maze {
     $(this.gameArea).addEventListener('click', event => {
       let classList = event.target.classList;
 
-      if (classList.contains('tile')) {
+      if (classList.contains('tile2')) {
         classList.toggle('tile-wall');
       }
     });
