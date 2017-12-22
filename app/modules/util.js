@@ -9,5 +9,14 @@ function $All(selector) {
 function findTile(n) {
   return $All('.tile').item(n)
 }
+function occurencesOf(val, arr) {
+  occurances = 0
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === val) {
+      nbOcc++;
+    }
+  }
+  return occurances;
+}
 
-export { $, $All, findTile, isEven };
+export { $, $All, findTile, isEven, occurencesOf };
