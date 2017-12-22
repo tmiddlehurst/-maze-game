@@ -6,20 +6,8 @@ function $(selector) {
 function $All(selector) {
   return document.querySelectorAll(selector);
 }
+function findTile(n) {
+  return $All('.tile').item(n)
+}
 
-export { $, $All, isEven };
-
-// export const moveFromKey = {
-//   a: function(position) {
-//     return (position -= 1);
-//   },
-//   d: function(position) {
-//     return (position += 1);
-//   },
-//   w: function(position, width) {
-//     return (position -= width);
-//   },
-//   s: function(position, width) {
-//     return (position += width);
-//   }
-// };
+export { $, $All, findTile, isEven };

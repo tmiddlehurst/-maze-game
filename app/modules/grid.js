@@ -3,7 +3,6 @@ import { $ } from './util.js';
 /**
  *
  * Defines a tile within the game grid.
- * Sets index, dimensions, 'isWall'.
  */
 export class Tile {
   /**
@@ -20,16 +19,16 @@ export class Tile {
 }
 
 /**
- * Defines the game grid in which to build the maze.
+ * Defines the base game grid in which to build the maze.
  */
 export default class Grid {
   /**
    *
-   * @param {String} container - querySelector for container element.
+   * @param {String} containerSelector - querySelector for container element.
    * @param {Number} dimension - height and width value for each square tile.
    */
-  constructor(container, tileDimension) {
-    this.container = $(container);
+  constructor(containerSelector, tileDimension) {
+    this.container = $(containerSelector);
 
     // Number of cols/rows
     this.width = this.container.clientWidth / tileDimension;
@@ -63,47 +62,3 @@ export default class Grid {
     });
   }
 }
-
-// /**
-//  * Defines a save state for a game maze.
-//  *
-//  * Saves maze by converting to an array of binaries, 1 == wall, 0 == walkable
-//  * Loads maze by iterating over saved array to render tiles.
-//  */
-// class Maze {
-//   constructor(gameAreaSelector) {
-//     this.gameArea = $(gameAreaSelector);
-//     this.savedMaze = window.localStorage.getItem('maze').split(',') || [];
-//     $('.edit-maze').addEventListener('click', () => this.isEditing());
-//     $('.save-maze').addEventListener('click', () => this.saveMaze());
-
-//     this.loadMaze();
-//   }
-
-//   isEditing() {
-//     $(this.gameArea).addEventListener('click', event => {
-//       let classList = event.target.classList;
-
-//       if (classList.contains('tile')) {
-//         classList.toggle('tile-wall');
-//       }
-//     });
-//   }
-
-//   loadMaze() {
-//     let tiles ile');
-//     tiles.forEach((e, i) => {
-//       if (this.savedMaze[i] == 1) {
-//         e.classList.add('tile-wall');
-//       }
-//     });
-//   }
-
-//   saveMaze() {
-//     let tiles ile');
-//     let newMaze = tiles.map(
-//       e => (e.classList.contains('tile-wall') ? '1' : '0')
-//     );
-//     window.localStorage.setItem('maze', newMaze);
-//   }
-// }

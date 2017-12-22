@@ -1,7 +1,10 @@
 import { $ } from './util.js';
 
+/**
+ * Defines 'lights' in the game area to hide/show walkable path and characters.
+ */
 export default class Lights {
-  toggle() {
+  toggleOnOff() {
     $('.game-area').classList.toggle('lights_off');
   }
 }

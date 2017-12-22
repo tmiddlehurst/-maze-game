@@ -1,5 +1,9 @@
 import { $ } from './util.js';
 
+
+/**
+ * Defines the main game clock.
+ */
 export default class Clock {
   constructor() {
     this.intervalId;

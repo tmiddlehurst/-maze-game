@@ -7,30 +7,25 @@ import Lights from './modules/lights.js';
 
 window.onload = () => {
   const clock = new Clock();
-  // TODO: Refactor gameGrid constructor to take {number of tiles} - integer and still produce a grid of square tiles.
-  const grid = new Grid('.game-area', 50);
+  const grid = new Grid('.game-area', 50); // TODO: Refactor gameGrid constructor to take {number of tiles} - integer and still produce a grid of square tiles.
   const maze = new Maze();
   const player = new Character('player', 112, grid);
+  const baddie = new Character('baddie', 139, grid);
   const lights = new Lights();
 
   document.addEventListener('keypress', function(event) {
-    actionKeymap[event.key]()
+    const key = event.key;
 
-    if (event.key == ' ') {
-      lights.toggle();
+    if (key == ' ') {
+      lights.toggleOnOff.call(lights);
       clock.toggleStartStop.call(clock);
-    }
-
-    let direction = actionKeymap[event.key];
-    let moveFunction = grid.movementMap[direction];
-    let tile = moveFunction.call(grid, player.position);
-
-    if (grid.tiles[tile].isWall || !grid.tiles[tile]) {
       return;
     }
-    player.moveTo.call(player, tile);
+
+    if (['w', 'a', 's', 'd'].includes(key)) {
+      player.move.call(player, null, key);
+    }
   });
 
-  // clock.start();
-  // const baddie = new Character('baddie', 112, gameGrid);
+  clock.toggleStartStop();
 };
