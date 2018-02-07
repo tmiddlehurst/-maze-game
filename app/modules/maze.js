@@ -3,7 +3,7 @@ import { $, $All } from './util.js';
 /**
  * Defines a save state for a game maze.
  *
- * Saves maze by converting to an array of binaries, 1 == wall, 0 == walkable
+ * Saves maze by converting to an binary array, wall = 1.
  * Loads maze by iterating over saved array to render tiles.
  */
 export default class Maze {

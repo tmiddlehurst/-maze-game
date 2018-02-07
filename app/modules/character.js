@@ -30,6 +30,7 @@ export default class Character {
   move(tile, key) {
     tile = tile || this.getMoveTile[key](this.position);
 
+    // Check if target tile exists & is a wall
     if (!tile || !this.grid.tiles[tile] || this.grid.tiles[tile].isWall) {
       return;
     }
@@ -40,11 +41,11 @@ export default class Character {
 
   _destroySprite(tile) {
     this.position = null;
-    findTile(tile).innerHTML = null;
+    $(`#tile-${tile}`).innerHTML = null;
   }
 
   _renderSprite(tile = this.position) {
     this.position = tile;
-    findTile(tile).innerHTML = `<div class="${this.name}"></div>`;
+    $(`#tile-${tile}`).innerHTML = `<div class="${this.name}"></div>`;
   }
 }
