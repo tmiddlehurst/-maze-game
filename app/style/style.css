@@ -47,3 +47,7 @@ body {
   background-color: var(--main-dark);
 }
 
+.junction {
+  background-color: greenyellow;
+}
+

@@ -1,22 +1,22 @@
-const isEven = value => value % 2;
+export const isEven = value => value % 2;
 
-function $(selector) {
+export function $(selector) {
   return document.querySelector(selector);
 }
-function $All(selector) {
+
+export function $All(selector) {
   return document.querySelectorAll(selector);
 }
-function findTile(n) {
-  return $All('.tile').item(n)
-}
-function occurencesOf(val, arr) {
-  occurances = 0
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] === val) {
-      nbOcc++;
-    }
-  }
-  return occurances;
-}
 
-export { $, $All, findTile, isEven, occurencesOf };
+/**
+ * Return number of occurances of {val} in {arr}
+ *
+ * @param {*} val - value to find
+ * @param {[*]} arr - array to look in
+ * @returns {Number}
+ */
+export function occuranceOf(val, arr) {
+  let occurances = arr.filter(element => element === val)
+
+  return occurances.length;
+}
