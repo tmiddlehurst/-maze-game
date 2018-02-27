@@ -1,7 +1,9 @@
 html {
-  --main-dark: #022242;
+  --main-dark: #171717;
   --main-light: #FFF;
   background: var(--main-dark);
+  background: url('../../assets/wall-background.jpg');
+  background-size: cover;
 }
 
 body {
@@ -39,26 +41,21 @@ body {
   flex-flow: row wrap;
   justify-content: even;
   margin: 12.5% auto;
-  background: var(--main-light);
-}
-
-.lights_off, .lights_off * {
-  background: var(--main-dark);
-  color: var(--main-dark);
+  background: none;
 }
 
 .tile {
   box-sizing: border-box;
-  border: 1px solid var(--main-dark);
   display: inline-block;
-  color: #a19c9c;
+  background: #8b8a8aa6;
 }
 
 .tile-wall {
-  background-color: var(--main-dark);
+  background: none;
+  border: none;
 }
 
-.tile-junction {
+/* .tile-junction {
   background-color: greenyellow;
 }
 
@@ -68,4 +65,11 @@ body {
 
 .path-considered {
   background-color: purple;
+} */
+
+.lights_off, .lights_off > .tile, {
+  /* background: var(--main-dark); */
+  background: none !important;
+  color: none;
+  border: none;
 }
