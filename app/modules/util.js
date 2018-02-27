@@ -20,3 +20,13 @@ export function occuranceOf(val, arr) {
 
   return occurances.length;
 }
+
+
+/**
+ * Return last item of array {Array}
+ *
+ * @param {Array} array
+ */
+export function lastInArray(array) {
+  return array[(array.length - 1)];
+}

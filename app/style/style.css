@@ -8,13 +8,24 @@ body {
   height: 100%;
 }
 
-.player {
-  height: 25px;
-  width: 25px;
+.character {
+  height: 32px;
+  width: 32px;
   border-radius: 25px;
   border: 2px solid var(--main-dark);
   background-color: red;
   margin: 18% auto;
+}
+
+.baddie {
+  border: none;
+  background: url(../../assets/Minotaur_Sprite.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.player {
+  background-color: red;
 }
 
 .clock-face {
@@ -47,7 +58,14 @@ body {
   background-color: var(--main-dark);
 }
 
-.junction {
+.tile-junction {
   background-color: greenyellow;
 }
 
+.tile-corridor {
+  background-color: lightblue;
+}
+
+.path-considered {
+  background-color: purple;
+}

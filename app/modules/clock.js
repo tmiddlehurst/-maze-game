@@ -12,10 +12,6 @@ export default class Clock {
     $('.clock-start_stop').addEventListener('click', () => this.toggleStartStop());
   }
 
-  isRunning() {
-    return this.intervalId.length != 0;
-  }
-
   toggleStartStop() {
     this.intervalId ? this._pause() : this._start();
   }
