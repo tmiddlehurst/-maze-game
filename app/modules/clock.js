@@ -8,8 +8,6 @@ export default class Clock {
   constructor() {
     this.intervalId;
     this.time = 0;
-
-    $('.clock-start_stop').addEventListener('click', () => this.toggleStartStop());
   }
 
   toggleStartStop() {
@@ -19,14 +17,12 @@ export default class Clock {
   _start() {
     this.intervalId = setInterval(() => {
       this.time += 0.025;
-      $('.clock-face').innerHTML = this.time.toFixed(1);
+      // $('.clock-face').innerHTML = this.time.toFixed(1);
     }, 25);
-    $('.clock-start_stop').innerText = 'Stop';
   }
 
   _pause() {
     clearInterval(this.intervalId);
     this.intervalId = null;
-    $('.clock-start_stop').innerText = 'Start';
   }
 }
