@@ -1,6 +1,8 @@
 import { $ } from './util.js';
 import findJunctions from './path-finding.js';
 
+const SAVED_MAZE = "1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,0,1,0,1,1,1,0,1,0,0,0,0,1,0,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,0,0,0,1,1,0,1,1,1,1,0,0,0,1,0,0,0,1,1,0,1,1,1,0,1,1,1,0,1,1,0,1,1,0,0,0,1,1,1,0,1,0,1,1,1,0,0,0,1,0,0,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,0,1,1,0,1,0,0,0,0,1,0,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1,1,0,1,1,0,1,0,1,1,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,1,1,0,0,1,1,0,0,0,1,0,1,0,1,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,1".split(',');
+
 /**
  *
  * @param {*} tileId
@@ -32,11 +34,9 @@ function _findNeighbours(tileId, gridWidth, savedMaze) {
  * @param {String} containerSelector - querySelector for container element.
  * @param {Number} dimension - px dimension for each tile.
  */
-export default class Grid {
+export class Grid {
   constructor(containerSelector, tileDimension) {
-    // const savedMaze = window.localStorage.getItem('maze').split(',')
-    //   || new Array(area).fill();
-    const savedMaze = "1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,0,1,0,1,1,1,0,1,0,0,0,0,1,0,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,0,0,0,1,1,0,1,1,1,1,0,0,0,1,0,0,0,1,1,0,1,1,1,0,1,1,1,0,1,1,0,1,1,0,0,0,1,1,1,0,1,0,1,1,1,0,0,0,1,0,0,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,0,1,1,0,1,0,0,0,0,1,0,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1,1,0,1,1,0,1,0,1,1,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,1,1,0,0,1,1,0,0,0,1,0,1,0,1,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,1".split(',');
+    const savedMaze = window.localStorage.getItem('maze').split(',') || SAVED_MAZE;
 
     this.container = $(containerSelector);
     this.width = this.container.clientWidth / tileDimension;
@@ -46,7 +46,7 @@ export default class Grid {
       .fill()
       .map((e, i) => {
         let walkableNeighbours = _findNeighbours(i, this.width, savedMaze);
-        let isWall = savedMaze[i] === "1"
+        let isWall = savedMaze[i] === "1";
         return {
           isWall: isWall,
           id: i,
@@ -63,11 +63,22 @@ export default class Grid {
     let blockRenderString = this.tiles.reduce((string, tile, i) => {
       let classes = '';
       classes += tile.isWall ? ' tile-wall' : '';
+      classes += i === 113 ? ' gate-tile' : '';
+
       // classes += tile.isJunction ? ' tile-junction' : '';
       // classes += tile.iscorridor ? ' tile-corridor' : '';
       return string += `<div style="height:50px;width:50px;" id="tile-${i}" data-tileIndex="${i}" class="tile${classes}"></div>`;
     }, '');
 
     this.container.innerHTML = blockRenderString;
+  }
+}
+
+export class MazeFeatures {
+  constructor() {
+    $('.gate-tile').innerHTML += `<div class="gate-tile_gate"></div>`;
+  }
+  removeGate() {
+    $('.gate-tile').innerHTML = null;
   }
 }

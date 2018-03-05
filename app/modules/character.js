@@ -1,5 +1,16 @@
 import { $, $All, findTile } from './util.js';
 
+const DIRECTION_MAP = {
+  w: 'UP',
+  ArrowUp: 'UP',
+  a: 'LEFT',
+  ArrowLeft: 'LEFT',
+  s: 'DOWN',
+  ArrowDown: 'DOWN',
+  d: 'RIGHT',
+  ArrowRight: 'RIGHT',
+}
+
 /**
  * Defines a character within the game.
  * Includes methods to render character, move character position.
@@ -12,33 +23,67 @@ export default class Character {
     this.name = name;
     this.position = startPosition;
     this.grid = grid;
+    this.stepsTaken = 0;
+    this.moveInterval;
+    this.moveDirection;
 
-    this.getMoveTile = {
-      'w': (pos) => pos - this.grid.width,
-      'a': (pos) => pos - 1,
-      's': (pos) => pos + this.grid.width,
-      'd': (pos) => pos + 1,
+    this.moveMap = {
+      UP: (pos) => pos - this.grid.width,
+      RIGHT: (pos) => pos + 1,
+      DOWN: (pos) => pos + this.grid.width,
+      LEFT: (pos) => pos - 1,
     };
     this._renderSprite();
   }
 
+  setMoveDirection(key) {
+    this.moveDirection = DIRECTION_MAP[key];
+
+    if (!this.moveInterval) {
+      this._walk();
+    }
+    console.log(`player direction is now ${DIRECTION_MAP[key]}`)
+  }
+
+  _walk(intervalTime = 200) {
+    this.moveInterval = setInterval(() => {
+      let move = this.moveMap[this.moveDirection];
+      let newTile = move(this.position);
+
+      this._moveTo(newTile);
+
+      console.log('Player move')
+    }, intervalTime)
+  }
+
   /**
-   * Moves the character using either tileNumber or keyboard key
+   * Moves the character using keyboard key
    *
-   * @param {Number} tile - Tile number to move to
    * @param {String} key - Keyboard key
    */
-  move(key) {
-    let tile = this.getMoveTile[key](this.position);
+  _moveTo(tile) {
 
     // Check if target tile exists & is a wall
     if (!tile || !this.grid.tiles[tile] || this.grid.tiles[tile].isWall) {
       return;
     }
 
+    this.stepsTaken++;
+    // this._playStepAudio();
+
     // Destroy & rerender character sprite
     this._destroySprite(this.position);
     this._renderSprite(tile);
+  }
+
+  _playStepAudio() {
+    let stepAudio;
+
+    if (this.stepsTaken % 2 === 0) {
+      stepAudio = $('#footstep-2');
+    } else stepAudio = $('#footstep-1');
+
+    stepAudio.play();
   }
 
   _destroySprite(tile) {

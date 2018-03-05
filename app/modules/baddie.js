@@ -1,15 +1,29 @@
-import { floodFill } from './path-finding.js';
+import { floodFillPathFinder } from './path-finding.js';
 import Character from './character.js';
 
 export default class Baddie extends Character {
   constructor() {
     super(...arguments);
-    this.path = floodFill(this.grid, this.position, 139);
     this.intervalId;
+    this.path = floodFillPathFinder(this.grid, this.position, 139);
   }
 
-  move(tile) {
-    // Check if target tile exists & is a wall
+  /**
+   * Toggle baddie walk interval
+   *
+   * @param {Number} intervalTimeMs Number of miliseconds between baddie move
+   */
+  toggleWalk(intervalTimeMs) {
+    this.intervalId ? this._stopWalk() : this._walk(intervalTimeMs);
+  }
+
+  /**
+   * Move to a tile
+   *
+   * @param {Integer} tile tileId to move to
+   */
+  _moveTo(tile) {
+    // Check if target tile exists & is not a wall
     if (!tile || !this.grid.tiles[tile] || this.grid.tiles[tile].isWall) {
       return;
     }
@@ -19,15 +33,16 @@ export default class Baddie extends Character {
     this._renderSprite(tile);
   }
 
-  toggleWalk() {
-    this.intervalId ? this._stopWalk() : this._walk();
-  }
+  /**
+   * Start walk interval
+   * @param {Number} intervalTime Number of miliseconds between baddie move
+   */
+  _walk(intervalTime = 75) {
 
-  _walk() {
     this.intervalId = setInterval(() => {
       let nextTile = this.path[1];
-      this.move(nextTile);
-    }, 137);
+      this._moveTo(nextTile);
+    }, intervalTime);
   }
 
   _stopWalk() {

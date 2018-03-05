@@ -1,29 +1,30 @@
 import { $ } from './modules/util.js';
 import Clock from './modules/clock.js';
-import Grid from './modules/grid.js';
+import { Grid, MazeFeatures } from './modules/grid.js';
 import Maze from './modules/maze.js';
 import Character from './modules/character.js';
 import Baddie from './modules/baddie.js';
 import Lights from './modules/lights.js';
-import { findJunctions, floodFill, Pathfinder } from './modules/path-finding.js';
+import { findJunctions, floodFillPathFinder } from './modules/path-finding.js';
 
 window.onload = () => {
   const clock = new Clock();
   const grid = new Grid('.game-area', 50); // TODO: Refactor gameGrid constructor to take {number of tiles} - integer and still produce a grid of square tiles.
   const maze = new Maze('.game-area');
   const lights = new Lights();
-  const player = new Character('player', 112, grid);
-
-  let baddie;
+  const player = new Character('player', 114, grid);
+  const baddie = new Baddie('baddie', 112, grid);
+  const mazeFeatures = new MazeFeatures();
 
   setTimeout(() => {
-    baddie = new Baddie('baddie', 112, grid);
     baddie.toggleWalk.call(baddie);
-    locatePlayerEvery(275);
-  }, 2000);
+    locatePlayerEvery(200);
+  }, 5000);
 
-  document.addEventListener('keypress', event => {
-    event.preventDefault();
+
+  //KeyPress Handler
+  document.addEventListener('keydown', event => {
+    // event.preventDefault();
     const key = event.key;
 
     if (key === ' ') {
@@ -33,8 +34,8 @@ window.onload = () => {
       return;
     }
 
-    if (['w', 'a', 's', 'd'].includes(key)) {
-      player.move(key);
+    if (['w', 'a', 's', 'd', 'ArrowRight', 'ArrowUp', 'ArrowLeft', 'ArrowDown' ].includes(key)) {
+      player.setMoveDirection.call(player, key);
     }
   });
 
@@ -43,7 +44,7 @@ window.onload = () => {
   function locatePlayerEvery(miliseconds) {
     const findingPlayerInterval = setInterval(() => {
       if (player.position !== baddie.position) {
-        baddie.path = floodFill(grid, baddie.position, player.position);
+        baddie.path = floodFillPathFinder(grid, baddie.position, player.position);
       } else {
         alert("you have been caught");
         baddie.toggleWalk();
