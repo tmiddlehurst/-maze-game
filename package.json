@@ -14,8 +14,17 @@
     "webkit": "0.0.0"
   },
   "nodemonConfig": {
-    "ignore": ["test/*", "docs/*", "lib/*", "node_modules/*", "app/assets/*"],
+    "ignore": [
+      "test/*",
+      "docs/*",
+      "lib/*",
+      "node_modules/*",
+      "app/assets/*"
+    ],
     "delay": "1500",
     "watch": "app/modules/*"
+  },
+  "dependencies": {
+    "lodash": "^4.17.5"
   }
 }

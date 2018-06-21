@@ -1,44 +1,39 @@
-import { $, $All } from './util.js';
+import { $ } from './util.js';
 
 /**
- * Defines a save state for a game maze.
+ * Renders a random maze of square tiles with dimensions width x height within a container
  *
- * Saves maze by converting to an binary array, wall = 1.
- * Loads maze by iterating over saved array to render tiles.
+ * @param {String} containerSelector - querySelector for container element.
+ * @param {Number} dimension - px dimension for each tile.
  */
-export default class Maze {
-  constructor(gameAreaSelector) {
-    this.gameArea = $(gameAreaSelector);
-    this.savedMaze = window.localStorage.getItem('maze').split(',') || [];
-    $('.maze-edit').addEventListener('click', () => this.isEditing());
-    $('.maze-save').addEventListener('click', () => this.saveMaze());
-  }
+export function renderMaze(containerSelector, maze) {
+  const container = $(containerSelector);
+  const height = maze.length;
+  const width = maze[0].length;
 
-  isEditing() {
-    this.gameArea.addEventListener('click', event => {
-      let classList = event.target.classList;
+  let blockRenderString = '';
 
-      if (classList.contains('tile')) {
-        classList.toggle('tile-wall');
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
+      let classes = '';
+
+      if (maze[i][j] === 0) {
+        classes += ' tile-wall';
       }
-    });
+
+      blockRenderString += `<div style="height:${(container.clientHeight / height)}px;width:${(container.clientWidth / width)}px;" id="tile-${i}-${j}" class="tile${classes}"></div>`;
+    }
   }
 
-  saveMaze() {
-    let tiles = $All('.tile');
-    let newMaze = []
-    tiles.forEach(t => {
-      if (t.classList.contains('tile-wall')) {
-        newMaze.push(1);
-      } else {
-        newMaze.push(0);
-      }
-    });
-    window.localStorage.setItem('maze', newMaze);
-  }
+  container.innerHTML = blockRenderString;
+  return maze;
 }
 
-export const MAZES = {
-  testMaze: "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
-  maze1: "1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,0,1,0,1,1,1,0,1,0,0,0,0,1,0,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,0,0,0,1,1,0,1,1,1,1,0,0,0,1,0,0,0,1,1,0,1,1,1,0,1,1,1,0,1,1,0,1,1,0,0,0,1,1,1,0,1,0,1,1,1,0,0,0,1,0,0,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,1,0,1,1,0,1,0,0,0,0,1,0,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1,1,0,1,1,0,1,0,1,1,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,1,1,0,0,1,1,0,0,0,1,0,1,0,1,1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,1"
+export class MazeFeatures {
+  constructor() {
+    $('.gate-tile').innerHTML += `<div class="gate-tile_gate"></div>`;
+  }
+  removeGate() {
+    $('.gate-tile').innerHTML = null;
+  }
 }

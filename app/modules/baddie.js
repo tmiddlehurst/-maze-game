@@ -1,52 +1,58 @@
-import { floodFillPathFinder } from './path-finding.js';
+import { pathFinder, isWalkable, coordsToIndex } from './path-finding.js';
 import Character from './character.js';
 
 export default class Baddie extends Character {
-  constructor() {
+  constructor(name, maze, player) {
     super(...arguments);
-    this.intervalId;
-    this.path = floodFillPathFinder(this.grid, this.position, 139);
+
+    // If i set this.playerPos = player.position, will this be a reference to player.position always or will it just cache the value of player.position when this class is instantiated?
+    this.player = player;
+    this.stepsTaken = 0;
+
+    this._locatePlayerInterval = null;
+    this._walkInterval = null;
+    this._path = [];
   }
 
-  /**
-   * Toggle baddie walk interval
-   *
-   * @param {Number} intervalTimeMs Number of miliseconds between baddie move
-   */
-  toggleWalk(intervalTimeMs) {
-    this.intervalId ? this._stopWalk() : this._walk(intervalTimeMs);
+  toggleWalk(intervalMilis) {
+    this._walkInterval ? this._stopWalk() : this._startWalk(intervalMilis);
   }
 
-  /**
-   * Move to a tile
-   *
-   * @param {Integer} tile tileId to move to
-   */
-  _moveTo(tile) {
-    // Check if target tile exists & is not a wall
-    if (!tile || !this.grid.tiles[tile] || this.grid.tiles[tile].isWall) {
-      return;
-    }
+  _locatePlayer() {
+    let thisPos = coordsToIndex(this.position);
+    let playerPos = coordsToIndex(this.player.position);
 
-    // Destroy & rerender character sprite
-    this._destroySprite(this.position);
-    this._renderSprite(tile);
+    let path = pathFinder(this.maze, thisPos, playerPos);
+
+    return path ? [[0, 0]] : path;
+  }
+
+  _locatePlayerInterval() {
+    this._locatePlayerInterval = setInterval(() => {
+      this._path = this._locatePlayer();
+    }, 1500);
   }
 
   /**
    * Start walk interval
    * @param {Number} intervalTime Number of miliseconds between baddie move
    */
-  _walk(intervalTime = 75) {
-
-    this.intervalId = setInterval(() => {
-      let nextTile = this.path[1];
-      this._moveTo(nextTile);
+  _startWalk(intervalTime = 75) {
+    this._path = this._locatePlayer();
+    this.walkInterval = setInterval(() => {
+      let nextTile = this._path[1];
+      this._step(nextTile);
+      if (nextTile = this.player.position) {
+        this._tearDown();
+      }
     }, intervalTime);
   }
 
-  _stopWalk() {
-    clearInterval(this.intervalId);
-    this.intervalId = null;
+  _tearDown() {
+    console.log(`${this.name} SHUTTING DOWN`);
+    clearInterval(this._locatePlayerInterval);
+    clearInterval(this._walkInterval);
+    this._walkInterval = null;
+    this._locatePlayerInterval = null;
   }
 }
