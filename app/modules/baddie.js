@@ -19,12 +19,10 @@ export default class Baddie extends Character {
   }
 
   _locatePlayer() {
-    let thisPos = coordsToIndex(this.position);
-    let playerPos = coordsToIndex(this.player.position);
+    const { maze, position, player } = this;
+    let path = pathFinder(maze, position, player.position);
 
-    let path = pathFinder(this.maze, thisPos, playerPos);
-
-    return path ? [[0, 0]] : path;
+    return path ? path : [[0, 0]];
   }
 
   _locatePlayerInterval() {

@@ -9,25 +9,12 @@ import { moveMap, isWalkable } from './path-finding.js';
 */
 export default class Character {
   constructor(name, maze) {
-    this.moveInterval;
-    this.direction;
     this.name = name;
     this.maze = maze;
+    this.moveInterval;
+    this.direction;
+
     this.stepsTaken = 0;
-  }
-
-  /**
-   * Set move direction
-   *
-   * @param {String} direction N/E/S/W
-   */
-  setMoveDirection(direction) {
-    this.direction = move[direction];
-
-    if (!this.moveInterval) {
-      this._startWalk();
-    }
-    console.log(`player direction is now` + direction)
   }
 
   /**
@@ -36,8 +23,24 @@ export default class Character {
    * @param {Co-ords} tile
    */
   spawn(tile) {
-    this._destroySprite();
-    this._renderSprite(tile);
+    if (this.position) {
+      this._destroySprite();
+    }
+    this._renderAt(tile);
+  }
+
+  /**
+   * Set move direction
+   *
+   * @param {String} direction N/E/S/W
+   */
+  setMoveDirection(direction) {
+    if (!this.moveInterval) {
+      this._startWalk();
+    }
+
+    this.direction = direction;
+    console.log(`player direction is now ${direction}`)
   }
 
   /**
@@ -49,9 +52,12 @@ export default class Character {
     this.moveInterval = setInterval(() => {
       let nextTile = moveMap[this.direction](this.position);
 
-      if (isWalkable(nextTile)) {
-        this._moveTo(newTile);
-        console.log('Player move');
+      if (isWalkable(this.maze, nextTile)) {
+        console.log('Step');
+        this.stepsTaken++;
+        this._destroySprite();
+        this._renderAt(nextTile);
+
       } else this._stopWalk();
 
     }, intervalTime)
@@ -65,30 +71,15 @@ export default class Character {
     this.moveInterval = null;
   }
 
-
-  /**
-   * Render character at `tile`
-   *
-   * @param {Co-ords} tile
-   */
-  _moveTo(tile) {
-    this.stepsTaken++;
-
-    // Destroy & rerender character sprite
-    this._destroySprite();
-    this._renderSprite(tile);
-  }
-
-
   _destroySprite() {
-    const [x, y] = this.position;
+    const [y, x] = this.position; // TODO: X and Y in the grid are the wrong way around, fix this at some point?
 
     $(`#tile-${y}-${x}`).innerHTML = null;
     this.position = null;
   }
 
-  _renderSprite(tile = this.position) {
-    const [x, y] = tile;
+  _renderAt(tile = this.position) {
+    const [y, x] = tile;
 
     $(`#tile-${y}-${x}`).innerHTML = `<div class="character ${this.name}"></div>`;
     this.position = tile;

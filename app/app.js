@@ -31,7 +31,6 @@ window.onload = () => {
   //KeyPress Handler
   function inputHandler() {
     return document.addEventListener('keydown', event => {
-      const key = event.key;
       const actionMap = {
         'ArrowUp': () => playerMove('N'),
         'ArrowRight': () => playerMove('E'),
@@ -43,7 +42,7 @@ window.onload = () => {
         'a': () => playerMove('W'),
         ' ': () => toggleLight(),
       }
-      const action = actionMap[key];
+      const action = actionMap[event.key];
 
       function toggleLight() {
         LIGHTS.toggleOnOff();
@@ -55,9 +54,7 @@ window.onload = () => {
         return PLAYER.setMoveDirection.call(PLAYER, direction);
       }
 
-      if (!action) {
-        return;
-      } else action();
+      if (action) action();
 
     });
   }

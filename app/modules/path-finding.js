@@ -1,4 +1,4 @@
-import { $, tail } from './util.js';
+import { $tail } from './util.js';
 
 export const moveMap = {
   'N': function up([x, y]) {
@@ -15,10 +15,49 @@ export const moveMap = {
   },
 };
 
+export function isWalkable(maze, [x, y]) {
+  if (maze[x] && maze[x][y]) {
+    return maze[x][y] === 1;
+  } else return false;
+}
+
+/**
+ * Get walkable neighbouring tiles
+ *
+ * @param {Number} i - Tile index
+ * @param {Array} maze - Maze
+ * @returns {Array} Array of tile indices
+ */
+function _getWalkableNeighbours(i, maze) {
+  const width = maze[0].length;
+  const [x, y] = indexToCoords(i, width);
+
+  let neighbours = [];
+
+  for (let dir in moveMap) {
+    let newTile = moveMap[dir]([x, y]);
+
+    if (isWalkable(maze, newTile)) {
+      neighbours.push(coordsToIndex(newTile, width));
+    }
+  }
+  return neighbours;
+}
+
+/**
+ *
+ * @param {Coords} [x,y] - Coordinates to convert
+ * @param {Number} width - Maze width
+ */
 export function coordsToIndex([x, y], width) {
   return x + y * width;
 }
 
+/**
+ *
+ * @param {Number} i - Index to convert
+ * @param {*} width
+ */
 export function indexToCoords(i, width) {
   let x = i % width;
   let y  = (i - x) / width;
@@ -26,54 +65,13 @@ export function indexToCoords(i, width) {
   return [x, y];
 }
 
-/**
- * Check if a tile is walkable
- *
- * @param {Maze} maze Binary maze array
- * @param {Integer} i Tile index
- */
-function isWalkable(maze, i) {
-  return maze[i] && maze[i] === 1;
-}
-
-// export function isWalkable(maze, [x, y]) {
-//   const width = maze[0].length;
-//   const height = maze.length;
-
-//   if (
-//     x < 0 ||
-//     y < 0 ||
-//     y >= width ||
-//     x >= height ||
-//     maze[x][y] === 0
-//   ) {
-//     return false;
-//   } else {
-//     return true
-//   }
-// }
-
-/**
- *
- * @param {Integer} i - Tile index
- * @param {Array} maze - Maze
- */
-function _getWalkableNeighbours(i, maze) {
-  let neighbours = [];
-
-  for (let dir in moveMap) {
-    // Bit dodgy - Convert index to coords to get new tile then convert new tile coords back to index.
-    let newTile = coordsToIndex(dir(indexToCoords(i)));
-
-    if (isWalkable(maze, newTile)) {
-      return neighbours.concat(newTile)
-    }
-  }
-  return neighbours;
-}
-
-
+//TODO: Fix this funct
 export function pathFinder(maze, start, target) {
+  const width = maze[0].length;
+
+  start = coordsToIndex(start, width);
+  target = coordsToIndex(target, width);
+
   let noPossibleRoute = false;
   let fastestRoute = null;
   let paths = [[start]];
@@ -81,9 +79,11 @@ export function pathFinder(maze, start, target) {
 
   // Extend `path` by one tile in each possible new direction.
   function _extend(path) {
-    let neighbours = _getWalkableNeighbours(tail(path), maze);
+    let neighbours = _getWalkableNeighbours($tail(path), maze);
+    debugger;
 
     // Neighbouring of current tile which are NOT in the current path. (Prevents Back-tracking)
+    // TODO: PROBLEM: cannot check for presence of an array (coordinate pair) within another array (path)
     let validTiles = neighbours.filter(tile => {
       return !path.includes(tile);
     });
@@ -112,6 +112,18 @@ export function pathFinder(maze, start, target) {
   }
   return fastestRoute || null;
 }
+
+
+// /**
+//  *
+//  * Check if a tile index corresponds to a walkabletile
+//  *
+//  * @param {Maze} maze Binary maze array
+//  * @param {Number} i Tile index
+//  */
+// function _isValidTileIndex(maze, i) {
+//   return maze[i] && maze[i] === 1;
+// }
 
 
 // class FloodFiller {
@@ -152,7 +164,7 @@ export function pathFinder(maze, start, target) {
 
 //   _extend(path) {
 //     // coordinates of path tip
-//     let [x, y] = tail(path);
+//     let [x, y] = $tail(path);
 
 //     //Find neighbours of current tile which are not in the current path. (Prevents Back-tracking)
 //     let validTiles = _findNeighbouringTiles([x, y], this.maze).filter(tile => !path.includes(tile));
@@ -174,7 +186,7 @@ export function pathFinder(maze, start, target) {
 //TODO: FINISH OFF REFACTOR OF THESE TWO FUNCTIONS
 
 // function findChildPaths(path, maze, targetTile) {
-//   let [tX, tY] = tail(path);
+//   let [tX, tY] = $tail(path);
 //   //Find neighbours of current tile which are not in the current path. (Prevents Back-tracking)
 //   let tilesToFlood = _findNeighbouringTiles([tX, tY], maze).filter(neighbour => !path.includes(neighbour));
 

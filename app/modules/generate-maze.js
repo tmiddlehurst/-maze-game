@@ -90,6 +90,5 @@ export function generateMaze(mazeWidth, mazeHeight) {
 
   // maze[(mazeHeight - 2)][(mazeWidth -2)] = 1; // end tile?
   // maze[(mazeHeight - 2)][(mazeWidth -1)] = 1; // end tile?
-  console.log(maze);
   return maze;
 }

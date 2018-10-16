@@ -11,17 +11,19 @@ export function renderMaze(containerSelector, maze) {
   const height = maze.length;
   const width = maze[0].length;
 
+  let i = 0;
   let blockRenderString = '';
 
-  for (let i = 0; i < height; i++) {
-    for (let j = 0; j < width; j++) {
+  for (let j = 0; j < height; j++) {
+    for (let k = 0; k < width; k++) {
       let classes = '';
 
-      if (maze[i][j] === 0) {
+      if (maze[j][k] === 0) {
         classes += ' tile-wall';
       }
 
-      blockRenderString += `<div style="height:${(container.clientHeight / height)}px;width:${(container.clientWidth / width)}px;" id="tile-${i}-${j}" class="tile${classes}"></div>`;
+      blockRenderString += `<div style="height:${(container.clientHeight / height)}px;width:${(container.clientWidth / width)}px;" id="tile-${j}-${k}" class="tile${classes} index-${i}"></div>`;
+      i++;
     }
   }
 
