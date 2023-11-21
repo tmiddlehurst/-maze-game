@@ -1,4 +1,4 @@
-import { $ } from './util.js';
+import { $ } from './utils.js';
 
 /**
  * Defines 'lights' in the game area to hide/show walkable path and characters.

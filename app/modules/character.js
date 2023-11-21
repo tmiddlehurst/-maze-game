@@ -1,4 +1,4 @@
-import { $, $All, findTile } from './util.js';
+import { $ } from './utils.js';
 import { moveMap, isWalkable } from './path-finding.js';
 
 /**
@@ -13,7 +13,6 @@ export default class Character {
     this.maze = maze;
     this.moveInterval;
     this.direction;
-
     this.stepsTaken = 0;
   }
 

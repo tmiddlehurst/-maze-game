@@ -1,4 +1,4 @@
-import { $, $All } from './util.js';
+import { $, $All } from './utils.js';
 
 /**
  * Defines a save state for a game maze.

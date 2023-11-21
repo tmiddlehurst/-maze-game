@@ -1,5 +1,4 @@
-import { randomIntBetween } from './util.js'
-
+import { randomIntBetween } from './utils.js'
 
 /**
  * Generate a random maze of specified width and height

@@ -1,4 +1,4 @@
-import { $tail } from './util.js';
+import { $tail } from './utils.js';
 
 export const moveMap = {
   'N': function up([x, y]) {
@@ -80,7 +80,6 @@ export function pathFinder(maze, start, target) {
   // Extend `path` by one tile in each possible new direction.
   function _extend(path) {
     let neighbours = _getWalkableNeighbours($tail(path), maze);
-    debugger;
 
     // Neighbouring of current tile which are NOT in the current path. (Prevents Back-tracking)
     // TODO: PROBLEM: cannot check for presence of an array (coordinate pair) within another array (path)

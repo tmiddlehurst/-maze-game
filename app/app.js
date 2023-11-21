@@ -1,5 +1,5 @@
 import { renderMaze, MazeFeatures } from './modules/maze.js';
-import { generateMaze } from './modules/generate-maze';
+import { generateMaze } from './modules/generate-maze.js';
 import { isWalkable, pathFinder } from './modules/path-finding.js';
 import Character from './modules/character.js';
 import Baddie from './modules/baddie.js';
@@ -15,7 +15,7 @@ window.onload = () => {
   let MAZE;
 
   (function newGame() {
-    MAZE = generateMaze(32, 16);
+    MAZE = generateMaze(64, 32);
     PLAYER = new Character('player', MAZE);
     BADDIE = new Baddie('baddie', MAZE, PLAYER);
 
